@@ -8,7 +8,7 @@ using Robust.Shared.Serialization.Markdown.Mapping;
 using Robust.Shared.Serialization.Markdown.Validation;
 using Robust.Shared.Serialization.TypeSerializers.Interfaces;
 
-namespace StyleSheetify.Client.StyleSheet.StyleBox;
+namespace Content.StyleSheetify.Client.StyleSheet.StyleBox;
 
 [TypeSerializer]
 public sealed class StyleBoxSerializer : ITypeSerializer<StyleBoxFlat, MappingDataNode>, ITypeSerializer<StyleBoxTexture, MappingDataNode>

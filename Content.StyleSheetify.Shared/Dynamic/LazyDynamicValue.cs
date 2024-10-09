@@ -1,4 +1,4 @@
-﻿namespace StyleSheetify.Shared.Dynamic;
+﻿namespace Content.StyleSheetify.Shared.Dynamic;
 
 public sealed class LazyDynamicValue
 {

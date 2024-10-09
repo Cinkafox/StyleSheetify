@@ -1,8 +1,8 @@
 ﻿using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.Manager.Attributes;
-using StyleSheetify.Shared.Dynamic;
+using Content.StyleSheetify.Shared.Dynamic;
 
-namespace StyleSheetify.Client.StyleSheet;
+namespace Content.StyleSheetify.Client.StyleSheet;
 
 [Prototype("styleSheet")]
 public sealed class StyleSheetPrototype : IPrototype

@@ -4,7 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>StyleSheetify.Client</RootNamespace>
+        <RootNamespace>Content.StyleSheetify.Client</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

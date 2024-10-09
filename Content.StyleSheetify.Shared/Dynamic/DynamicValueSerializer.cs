@@ -11,7 +11,7 @@ using Robust.Shared.Serialization.Markdown.Validation;
 using Robust.Shared.Serialization.Markdown.Value;
 using Robust.Shared.Serialization.TypeSerializers.Interfaces;
 
-namespace StyleSheetify.Shared.Dynamic;
+namespace Content.StyleSheetify.Shared.Dynamic;
 
 [TypeSerializer]
 public sealed class DynamicValueSerializer : ITypeSerializer<DynamicValue, MappingDataNode>, ITypeSerializer<DynamicValue, ValueDataNode>

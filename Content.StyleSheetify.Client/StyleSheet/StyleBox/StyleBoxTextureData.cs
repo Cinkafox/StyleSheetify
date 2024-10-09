@@ -8,7 +8,7 @@ using Robust.Shared.Utility;
 using IRsiStateLike = Robust.Client.Graphics.IRsiStateLike;
 using StyleBoxTexture = Robust.Client.Graphics.StyleBoxTexture;
 
-namespace StyleSheetify.Client.StyleSheet.StyleBox;
+namespace Content.StyleSheetify.Client.StyleSheet.StyleBox;
 
 [Serializable, DataDefinition]
 public sealed partial class StyleBoxTextureData : StyleBoxData

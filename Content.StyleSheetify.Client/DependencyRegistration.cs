@@ -1,7 +1,7 @@
 using Robust.Shared.IoC;
-using StyleSheetify.Client.StyleSheet;
+using Content.StyleSheetify.Client.StyleSheet;
 
-namespace StyleSheetify.Client;
+namespace Content.StyleSheetify.Client;
 
 public static class DependencyRegistration
 {

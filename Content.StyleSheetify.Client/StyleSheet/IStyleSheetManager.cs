@@ -1,7 +1,8 @@
 using Robust.Client.UserInterface;
 using Robust.Shared.Prototypes;
+using Content.StyleSheetify.Client.StyleSheet;
 
-namespace StyleSheetify.Client.StyleSheet;
+namespace Content.StyleSheetify.Client.StyleSheet;
 
 public interface IStyleSheetManager
 {

@@ -2,7 +2,7 @@
 using Robust.Shared.Serialization.Manager.Attributes;
 using Robust.Shared.ViewVariables;
 
-namespace StyleSheetify.Shared.Dynamic;
+namespace Content.StyleSheetify.Shared.Dynamic;
 
 [DataDefinition, Serializable, Virtual]
 public partial class DynamicValue

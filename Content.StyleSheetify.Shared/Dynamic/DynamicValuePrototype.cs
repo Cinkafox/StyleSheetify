@@ -1,7 +1,7 @@
 ﻿using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.Manager.Attributes;
 
-namespace StyleSheetify.Shared.Dynamic;
+namespace Content.StyleSheetify.Shared.Dynamic;
 
 [Prototype("dynamicValue")]
 public sealed class DynamicValuePrototype: IPrototype

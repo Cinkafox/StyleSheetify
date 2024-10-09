@@ -1,7 +1,7 @@
 ﻿using Robust.Shared.Maths;
 using Robust.Shared.Serialization.Manager.Attributes;
 
-namespace StyleSheetify.Client.StyleSheet.StyleBox;
+namespace Content.StyleSheetify.Client.StyleSheet.StyleBox;
 
 [Serializable, DataDefinition]
 public abstract partial class StyleBoxData

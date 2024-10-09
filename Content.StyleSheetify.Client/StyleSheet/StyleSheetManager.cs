@@ -3,7 +3,7 @@ using Robust.Shared.IoC;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Reflection;
 
-namespace StyleSheetify.Client.StyleSheet;
+namespace Content.StyleSheetify.Client.StyleSheet;
 
 public sealed class StyleSheetManager : IStyleSheetManager
 {
