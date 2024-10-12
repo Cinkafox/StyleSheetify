@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Numerics;
 using Robust.Shared.IoC;
 using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
@@ -10,6 +12,7 @@ using Robust.Shared.Serialization.Markdown.Mapping;
 using Robust.Shared.Serialization.Markdown.Validation;
 using Robust.Shared.Serialization.Markdown.Value;
 using Robust.Shared.Serialization.TypeSerializers.Interfaces;
+using Robust.Shared.Utility;
 
 namespace Content.StyleSheetify.Shared.Dynamic;
 
@@ -64,6 +67,13 @@ public sealed class DynamicValueSerializer : ITypeSerializer<DynamicValue, Mappi
         {
             var color = serializationManager.Read<Color>(node);
             return new DynamicValue("Color", color);
+        }
+
+        if (VectorSerializerUtility.TryParseArgs(node.Value, 2, out var args))
+        {
+            var x = float.Parse(args[0], CultureInfo.InvariantCulture);
+            var y = float.Parse(args[1], CultureInfo.InvariantCulture);
+            return new DynamicValue("Vector2", new Vector2(x,y));
         }
 
         return new DynamicValue(nameof(ProtoId<DynamicValuePrototype>), 
