@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Text;
 using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
@@ -15,7 +14,7 @@ using Robust.Shared.Serialization.Markdown.Validation;
 using Robust.Shared.Serialization.TypeSerializers.Interfaces;
 using Robust.Shared.Utility;
 
-namespace Content.Game.Font;
+namespace Content.StyleSheetify.Client.Font;
 
 
 [Serializable, DataDefinition, Virtual]
@@ -77,7 +76,7 @@ public partial class FontSpecifier : Robust.Client.Graphics.Font
         return GetFont().GetLineHeight(scale);
     }
 
-    public override float DrawChar(DrawingHandleScreen handle, Rune rune, Vector2 baseline, float scale, Color color, bool fallback = true)
+    public override float DrawChar(DrawingHandleBase handle, Rune rune, Vector2 baseline, float scale, Color color, bool fallback = true)
     {
         return GetFont().DrawChar(handle, rune, baseline, scale, color, fallback);
     }
