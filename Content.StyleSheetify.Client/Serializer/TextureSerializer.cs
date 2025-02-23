@@ -39,7 +39,6 @@ public sealed class TextureSerializer : ITypeSerializer<Texture, ValueDataNode>,
         ISerializationManager.InstantiationDelegate<Texture>? instanceProvider = null)
     {
         var path = serializationManager.Read<ResPath>(node);
-        dependencies.Resolve<ILogManager>().RootSawmill.Info($"LOAD TEXTURE {path}");
         var tr = dependencies.Resolve<IResourceCache>().GetResource<TextureResource>(path);
         return tr.Texture;
     }
