@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Content.StyleSheetify.Client.Serializer;
 using Robust.Client.ResourceManagement;
 using Robust.Client.Utility;
 using Robust.Shared.IoC;
@@ -7,14 +8,15 @@ using Robust.Shared.Serialization.Manager.Attributes;
 using Robust.Shared.Utility;
 using IRsiStateLike = Robust.Client.Graphics.IRsiStateLike;
 using StyleBoxTexture = Robust.Client.Graphics.StyleBoxTexture;
+using Texture = Robust.Client.Graphics.Texture;
 
 namespace Content.StyleSheetify.Client.StyleSheet.StyleBox;
 
 [Serializable, DataDefinition]
 public sealed partial class StyleBoxTextureData : StyleBoxData
 {
-    [DataField] public SpriteSpecifier Texture;
-    
+    [DataField(customTypeSerializer:typeof(TextureSerializer))] public Texture Texture;
+
     /// <summary>
     /// Left expansion size, in virtual pixels.
     /// </summary>
@@ -54,6 +56,8 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
     /// </remarks>
     [DataField] public float ExpandMarginRight;
 
+    [DataField] public float? ExpandMarginAll;
+
     [DataField] public StyleBoxTexture.StretchMode Mode = StyleBoxTexture.StretchMode.Stretch;
 
     /// <summary>
@@ -78,32 +82,43 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
     /// The size of this patch in virtual pixels can be obtained by scaling this with <see cref="TextureScale"/>.
     /// </summary>
     [DataField] public float PatchMarginBottom;
+    [DataField] public float? PatchMarginAll;
 
     [DataField] public Thickness? PatchMargin;
     [DataField] public Thickness? ExpandMargin;
 
     [DataField] public Color Modulate = Color.White;
-    
+
     /// <summary>
     /// Additional scaling to use when drawing the texture.
     /// </summary>
     [DataField] public Vector2 TextureScale  = Vector2.One;
-    
+
     public StyleBoxTexture GetStyleboxTexture(IDependencyCollection dependencyCollection)
     {
         var styleBox = new StyleBoxTexture();
         SetBaseParam(ref styleBox);
-        styleBox.Texture = RsiStateLike(Texture, dependencyCollection).Default;
+        styleBox.Texture = Texture;
         styleBox.Mode = Mode;
         styleBox.Modulate = Modulate;
         styleBox.TextureScale = TextureScale;
 
         if (ExpandMargin is null)
         {
-            styleBox.ExpandMarginBottom = ExpandMarginBottom;
-            styleBox.ExpandMarginTop = ExpandMarginTop;
-            styleBox.ExpandMarginRight = ExpandMarginRight;
-            styleBox.ExpandMarginLeft = ExpandMarginLeft;
+            if (ExpandMarginAll is { } expandMarginAll)
+            {
+                styleBox.ExpandMarginBottom = expandMarginAll;
+                styleBox.ExpandMarginTop = expandMarginAll;
+                styleBox.ExpandMarginRight = expandMarginAll;
+                styleBox.ExpandMarginLeft = expandMarginAll;
+            }
+            else
+            {
+                styleBox.ExpandMarginBottom = ExpandMarginBottom;
+                styleBox.ExpandMarginTop = ExpandMarginTop;
+                styleBox.ExpandMarginRight = ExpandMarginRight;
+                styleBox.ExpandMarginLeft = ExpandMarginLeft;
+            }
         }
         else
         {
@@ -115,10 +130,20 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
 
         if (PatchMargin is null)
         {
-            styleBox.PatchMarginBottom = PatchMarginBottom;
-            styleBox.PatchMarginTop = PatchMarginTop;
-            styleBox.PatchMarginRight = PatchMarginRight;
-            styleBox.PatchMarginLeft = PatchMarginLeft;
+            if (PatchMarginAll is { } patchMarginAll)
+            {
+                styleBox.PatchMarginBottom = patchMarginAll;
+                styleBox.PatchMarginTop = patchMarginAll;
+                styleBox.PatchMarginRight = patchMarginAll;
+                styleBox.PatchMarginLeft = patchMarginAll;
+            }
+            else
+            {
+                styleBox.PatchMarginBottom = PatchMarginBottom;
+                styleBox.PatchMarginTop = PatchMarginTop;
+                styleBox.PatchMarginRight = PatchMarginRight;
+                styleBox.PatchMarginLeft = PatchMarginLeft;
+            }
         }
         else
         {
@@ -130,7 +155,7 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
 
         return styleBox;
     }
-    
+
     private IRsiStateLike RsiStateLike(SpriteSpecifier specifier, IDependencyCollection dependencies)
     {
         var resC = dependencies.Resolve<IResourceCache>();

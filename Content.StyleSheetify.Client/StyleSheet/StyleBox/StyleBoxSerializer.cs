@@ -6,6 +6,7 @@ using Robust.Shared.Serialization.Manager.Attributes;
 using Robust.Shared.Serialization.Markdown;
 using Robust.Shared.Serialization.Markdown.Mapping;
 using Robust.Shared.Serialization.Markdown.Validation;
+using Robust.Shared.Serialization.Markdown.Value;
 using Robust.Shared.Serialization.TypeSerializers.Interfaces;
 
 namespace Content.StyleSheetify.Client.StyleSheet.StyleBox;
@@ -16,7 +17,7 @@ public sealed class StyleBoxSerializer : ITypeSerializer<StyleBoxFlat, MappingDa
     public ValidationNode Validate(ISerializationManager serializationManager, MappingDataNode node,
         IDependencyCollection dependencies, ISerializationContext? context = null)
     {
-        throw new NotImplementedException();
+        return new ValidatedValueNode(node);
     }
 
     public StyleBoxFlat Read(ISerializationManager serializationManager, MappingDataNode node, IDependencyCollection dependencies,

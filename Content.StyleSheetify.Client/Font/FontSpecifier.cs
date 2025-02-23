@@ -21,41 +21,25 @@ namespace Content.StyleSheetify.Client.Font;
 public partial class FontSpecifier : Robust.Client.Graphics.Font
 {
     [DataField] public int Size;
-    [DataField("font")] public ResPath Path;
+    [DataField("font")] public List<ResPath> Path = [];
 
-    public FontSpecifier()
-    {
-    }
+    public FontSpecifier() {}
 
-    public FontSpecifier(ResPath resPath, int size)
+    public FontSpecifier(List<ResPath> resPath, int size)
     {
         Path = resPath;
         Size = size;
     }
-    
+
     protected Robust.Client.Graphics.Font? _font;
-    protected FontResource? _fontResource;
 
-    public FontResource FontResource
-    {
-        get
-        {
-            if(_fontResource == null) 
-                _fontResource = IoCManager.Resolve<IResourceCache>().GetResource<FontResource>(Path);
-            return _fontResource;
-        }
-    }
-
-    public virtual Robust.Client.Graphics.Font GetFont()
+    public Robust.Client.Graphics.Font GetFont()
     {
         if (_font != null) return _font;
-            
-        _font = new VectorFont(FontResource, Size);
-
+        _font = GetFont(IoCManager.Resolve<IResourceCache>(), Path, Size);
         return _font;
     }
-    
-    public static implicit operator FontResource(FontSpecifier fontSpecifier) => fontSpecifier.FontResource;
+
     public override int GetAscent(float scale)
     {
         return GetFont().GetAscent(scale);
@@ -85,18 +69,14 @@ public partial class FontSpecifier : Robust.Client.Graphics.Font
     {
         return GetFont().GetCharMetrics(rune, scale, fallback);
     }
-}
 
-public sealed class StackedFontSpecifier : FontSpecifier
-{
-    [DataField] public List<FontSpecifier> Specifiers = new();
-
-    public override Robust.Client.Graphics.Font GetFont()
+    private static Robust.Client.Graphics.Font GetFont(IResourceCache cache, List<ResPath> path, int size)
     {
-        if (_font != null) return _font;
-            
-        _font = new StackedFont(Specifiers.Select(s => s.GetFont()).ToArray());
-        return _font;
+        var fs = new Robust.Client.Graphics.Font[path.Count];
+        for (var i = 0; i < path.Count; i++)
+            fs[i] = new VectorFont(cache.GetResource<FontResource>(path[i]), size);
+
+        return new StackedFont(fs);
     }
 }
 
@@ -106,7 +86,9 @@ public sealed class FontSerializer : ITypeSerializer<Robust.Client.Graphics.Font
     public ValidationNode Validate(ISerializationManager serializationManager, MappingDataNode node,
         IDependencyCollection dependencies, ISerializationContext? context = null)
     {
-        throw new NotImplementedException();
+        if (!node.TryGet("font", out var pathNode) || !node.TryGet("size", out var sizeNode))
+            return new ErrorNode(node, "no font or size found!");
+        return new ValidatedValueNode(pathNode);
     }
 
     public Robust.Client.Graphics.Font Read(ISerializationManager serializationManager, MappingDataNode node, IDependencyCollection dependencies,
@@ -114,7 +96,7 @@ public sealed class FontSerializer : ITypeSerializer<Robust.Client.Graphics.Font
     {
         if (!node.TryGet("font", out var pathNode) || !node.TryGet("size", out var sizeNode))
             throw new Exception();
-        var path = serializationManager.Read<ResPath>(pathNode);
+        var path = serializationManager.Read<List<ResPath>>(pathNode);
         var size = serializationManager.Read<int>(sizeNode);
 
         return new FontSpecifier(path, size);
@@ -123,6 +105,8 @@ public sealed class FontSerializer : ITypeSerializer<Robust.Client.Graphics.Font
     public DataNode Write(ISerializationManager serializationManager, Robust.Client.Graphics.Font value, IDependencyCollection dependencies,
         bool alwaysWrite = false, ISerializationContext? context = null)
     {
-        throw new NotImplementedException();
+        if (value is FontSpecifier fontSpecifier)
+            return serializationManager.WriteValue(fontSpecifier);
+        throw new Exception();
     }
 }

@@ -15,7 +15,7 @@ public sealed class StyleSheetManager : IStyleSheetManager
     {
         if(!_prototypeManager.TryIndex<StyleSheetPrototype>(prototype,out var proto))
             return;
-        
+
         ApplyStyleSheet(proto);
     }
 
@@ -28,7 +28,7 @@ public sealed class StyleSheetManager : IStyleSheetManager
     {
         if (!_prototypeManager.TryIndex(protoId, out var prototype))
             throw new Exception($"{protoId} not exist!");
-        
+
         return GetStyleRules(prototype);
     }
 
@@ -40,7 +40,7 @@ public sealed class StyleSheetManager : IStyleSheetManager
         {
             styleRule.AddRange(GetStyleRules(parent));
         }
-        
+
         foreach (var (elementPath, value) in stylePrototype.Styles)
         {
             var element = GetElement(elementPath, stylePrototype);
@@ -48,17 +48,17 @@ public sealed class StyleSheetManager : IStyleSheetManager
             {
                 element.Prop(key, dynamicValue.GetValueObject());
             }
-            
+
             styleRule.Add(element);
         }
 
         return styleRule;
     }
-    
+
     public MutableSelectorElement GetElement(string type,StyleSheetPrototype? prototype = null)
     {
-        var pseudoSeparator = type.Split("#");
-        
+        var pseudoSeparator = type.Split(":");
+
         var classSeparator = pseudoSeparator[0].Split(".");
         var definedType = classSeparator[0];
         var element = new MutableSelectorElement();
@@ -69,10 +69,10 @@ public sealed class StyleSheetManager : IStyleSheetManager
             {
                 definedType = definition;
             }
-            
+
             element.Type = _reflectionManager.GetType(definedType);
         }
-        
+
         for (var i = 1; i < classSeparator.Length; i++)
         {
             element.Class(classSeparator[i]);
@@ -81,7 +81,7 @@ public sealed class StyleSheetManager : IStyleSheetManager
         {
             element.Pseudo(pseudoSeparator[i]);
         }
-        
+
         return element;
     }
 }
