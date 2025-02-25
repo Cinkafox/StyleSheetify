@@ -58,7 +58,7 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
 
     [DataField] public float? ExpandMarginAll;
 
-    [DataField] public StyleBoxTexture.StretchMode Mode = StyleBoxTexture.StretchMode.Stretch;
+    [DataField] public StyleBoxTexture.StretchMode StretchMode = StyleBoxTexture.StretchMode.Stretch;
 
     /// <summary>
     /// Distance of the left patch margin from the image. In texture space.
@@ -99,7 +99,7 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
         var styleBox = new StyleBoxTexture();
         SetBaseParam(ref styleBox);
         styleBox.Texture = Texture;
-        styleBox.Mode = Mode;
+        styleBox.Mode = StretchMode;
         styleBox.Modulate = Modulate;
         styleBox.TextureScale = TextureScale;
 
