@@ -10,5 +10,5 @@ public interface IStyleSheetManager
     public void ApplyStyleSheet(string prototype);
     public IEnumerable<StyleRule> GetStyleRules(ProtoId<StyleSheetPrototype> protoId);
     public List<StyleRule> GetStyleRules(StyleSheetPrototype stylePrototype);
-    public MutableSelectorElement GetElement(string type, StyleSheetPrototype? prototype = null);
+    public MutableSelector GetElement(string type, StyleSheetPrototype? prototype = null);
 }

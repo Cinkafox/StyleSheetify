@@ -55,10 +55,20 @@ public sealed class StyleSheetManager : IStyleSheetManager
         return styleRule;
     }
 
-    public MutableSelectorElement GetElement(string type,StyleSheetPrototype? prototype = null)
+    public MutableSelector GetElement(string type,StyleSheetPrototype? prototype = null)
     {
-        var pseudoSeparator = type.Split(":");
+        var childHandler = type.Split(' ').ToList();
 
+        if (childHandler.Count > 1)
+        {
+            var child = new MutableSelectorChild();
+            child.Parent(GetElement(childHandler[0]));
+            childHandler.RemoveAt(0);
+            child.Child(GetElement(string.Join(' ', childHandler)));
+            return child;
+        }
+
+        var pseudoSeparator = type.Split(":");
         var classSeparator = pseudoSeparator[0].Split(".");
         var definedType = classSeparator[0];
         var element = new MutableSelectorElement();
