@@ -25,7 +25,7 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
     /// extend beyond the box passed to the <see cref="StyleBox.Draw"/> function. This is not affected by
     /// <see cref="TextureScale"/>.
     /// </remarks>
-    [DataField] public float ExpandMarginLeft;
+    [DataField] public float? ExpandMarginLeft;
     /// <summary>
     /// Top expansion size, in virtual pixels.
     /// </summary>
@@ -34,7 +34,7 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
     /// extend beyond the box passed to the <see cref="StyleBox.Draw"/> function. This is not affected by
     /// <see cref="TextureScale"/>.
     /// </remarks>
-    [DataField] public float ExpandMarginTop;
+    [DataField] public float? ExpandMarginTop;
 
     /// <summary>
     /// Bottom expansion size, in virtual pixels.
@@ -44,7 +44,7 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
     /// extend beyond the box passed to the <see cref="StyleBox.Draw"/> function. This is not affected by
     /// <see cref="TextureScale"/>.
     /// </remarks>
-    [DataField] public float ExpandMarginBottom ;
+    [DataField] public float? ExpandMarginBottom ;
 
     /// <summary>
     /// Right expansion size, in virtual pixels.
@@ -54,7 +54,7 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
     /// extend beyond the box passed to the <see cref="StyleBox.Draw"/> function. This is not affected by
     /// <see cref="TextureScale"/>.
     /// </remarks>
-    [DataField] public float ExpandMarginRight;
+    [DataField] public float? ExpandMarginRight;
 
     [DataField] public float? ExpandMarginAll;
 
@@ -64,24 +64,24 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
     /// Distance of the left patch margin from the image. In texture space.
     /// The size of this patch in virtual pixels can be obtained by scaling this with <see cref="TextureScale"/>.
     /// </summary>
-    [DataField] public float PatchMarginLeft;
+    [DataField] public float? PatchMarginLeft;
     /// <summary>
     /// Distance of the right patch margin from the image. In texture space.
     /// The size of this patch in virtual pixels can be obtained by scaling this with <see cref="TextureScale"/>.
     /// </summary>
-    [DataField] public float PatchMarginRight;
+    [DataField] public float? PatchMarginRight;
 
     /// <summary>
     /// Distance of the top patch margin from the image. In texture space.
     /// The size of this patch in virtual pixels can be obtained by scaling this with <see cref="TextureScale"/>.
     /// </summary>
-    [DataField] public float PatchMarginTop;
+    [DataField] public float? PatchMarginTop;
 
     /// <summary>
     /// Distance of the bottom patch margin from the image. In texture space.
     /// The size of this patch in virtual pixels can be obtained by scaling this with <see cref="TextureScale"/>.
     /// </summary>
-    [DataField] public float PatchMarginBottom;
+    [DataField] public float? PatchMarginBottom;
     [DataField] public float? PatchMarginAll;
 
     [DataField] public Thickness? PatchMargin;
@@ -94,7 +94,7 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
     /// </summary>
     [DataField] public Vector2 TextureScale  = Vector2.One;
 
-    public StyleBoxTexture GetStyleboxTexture(IDependencyCollection dependencyCollection)
+    public StyleBoxTexture GetStyleboxTexture()
     {
         var styleBox = new StyleBoxTexture();
         SetBaseParam(ref styleBox);
@@ -112,13 +112,6 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
                 styleBox.ExpandMarginRight = expandMarginAll;
                 styleBox.ExpandMarginLeft = expandMarginAll;
             }
-            else
-            {
-                styleBox.ExpandMarginBottom = ExpandMarginBottom;
-                styleBox.ExpandMarginTop = ExpandMarginTop;
-                styleBox.ExpandMarginRight = ExpandMarginRight;
-                styleBox.ExpandMarginLeft = ExpandMarginLeft;
-            }
         }
         else
         {
@@ -127,6 +120,15 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
             styleBox.ExpandMarginRight = ExpandMargin.Value.Right;
             styleBox.ExpandMarginLeft = ExpandMargin.Value.Left;
         }
+
+        if (ExpandMarginBottom != null)
+            styleBox.ExpandMarginBottom = ExpandMarginBottom.Value;
+        if (ExpandMarginTop != null)
+            styleBox.ExpandMarginTop = ExpandMarginTop.Value;
+        if (ExpandMarginRight != null)
+            styleBox.ExpandMarginRight = ExpandMarginRight.Value;
+        if (ExpandMarginLeft != null)
+            styleBox.ExpandMarginLeft = ExpandMarginLeft.Value;
 
         if (PatchMargin is null)
         {
@@ -137,13 +139,6 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
                 styleBox.PatchMarginRight = patchMarginAll;
                 styleBox.PatchMarginLeft = patchMarginAll;
             }
-            else
-            {
-                styleBox.PatchMarginBottom = PatchMarginBottom;
-                styleBox.PatchMarginTop = PatchMarginTop;
-                styleBox.PatchMarginRight = PatchMarginRight;
-                styleBox.PatchMarginLeft = PatchMarginLeft;
-            }
         }
         else
         {
@@ -152,6 +147,16 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
             styleBox.PatchMarginRight = PatchMargin.Value.Right;
             styleBox.PatchMarginLeft = PatchMargin.Value.Left;
         }
+
+
+        if (PatchMarginBottom != null)
+            styleBox.PatchMarginBottom = PatchMarginBottom.Value;
+        if (PatchMarginTop != null)
+            styleBox.PatchMarginTop = PatchMarginTop.Value;
+        if (PatchMarginRight != null)
+            styleBox.PatchMarginRight = PatchMarginRight.Value;
+        if (PatchMarginLeft != null)
+            styleBox.PatchMarginLeft = PatchMarginLeft.Value;
 
         return styleBox;
     }

@@ -67,17 +67,15 @@ public abstract partial class StyleBoxData
                 styleBox.ContentMarginTopOverride = all;
                 styleBox.ContentMarginRightOverride = all;
             }
-            else
-            {
-                if (ContentMarginBottomOverride is not null)
-                    styleBox.ContentMarginBottomOverride = ContentMarginBottomOverride;
-                if (ContentMarginLeftOverride is not null)
-                    styleBox.ContentMarginLeftOverride = ContentMarginLeftOverride;
-                if (ContentMarginTopOverride is not null)
-                    styleBox.ContentMarginTopOverride = ContentMarginTopOverride;
-                if (ContentMarginRightOverride is not null)
-                    styleBox.ContentMarginRightOverride = ContentMarginRightOverride;
-            }
+
+            if (ContentMarginBottomOverride is not null)
+                styleBox.ContentMarginBottomOverride = ContentMarginBottomOverride;
+            if (ContentMarginLeftOverride is not null)
+                styleBox.ContentMarginLeftOverride = ContentMarginLeftOverride;
+            if (ContentMarginTopOverride is not null)
+                styleBox.ContentMarginTopOverride = ContentMarginTopOverride;
+            if (ContentMarginRightOverride is not null)
+                styleBox.ContentMarginRightOverride = ContentMarginRightOverride;
 
             if (ContentMarginVerticalOverride is { } verticalOverride)
             {
@@ -101,8 +99,6 @@ public abstract partial class StyleBoxData
                 styleBox.PaddingLeft = paddingAll;
                 styleBox.PaddingRight = paddingAll;
                 styleBox.PaddingTop = paddingAll;
-
-                return;
             }
 
             styleBox.PaddingBottom = PaddingBottom;

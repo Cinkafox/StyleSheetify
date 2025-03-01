@@ -35,7 +35,7 @@ public sealed class StyleBoxSerializer : ITypeSerializer<StyleBoxFlat, MappingDa
     public StyleBoxTexture Read(ISerializationManager serializationManager, MappingDataNode node,
         IDependencyCollection dependencies, SerializationHookContext hookCtx, ISerializationContext? context = null, ISerializationManager.InstantiationDelegate<StyleBoxTexture>? instanceProvider = null)
     {
-        return serializationManager.Read<StyleBoxTextureData?>(node)!.GetStyleboxTexture(dependencies);
+        return serializationManager.Read<StyleBoxTextureData?>(node)!.GetStyleboxTexture();
     }
 
     public DataNode Write(ISerializationManager serializationManager, StyleBoxTexture value, IDependencyCollection dependencies,
