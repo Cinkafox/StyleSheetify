@@ -5,7 +5,7 @@ using Robust.Shared.Reflection;
 
 namespace Content.StyleSheetify.Client.StyleSheet;
 
-public sealed class StyleSheetManager : IStyleSheetManager
+public sealed class ContentStyleSheetManager : IContentStyleSheetManager
 {
     [Dependency] private readonly IReflectionManager _reflectionManager = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;

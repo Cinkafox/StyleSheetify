@@ -7,6 +7,6 @@ public static class DependencyRegistration
 {
     public static void Register(IDependencyCollection dc)
     {
-        dc.Register<IStyleSheetManager, StyleSheetManager>();
+        dc.Register<IContentStyleSheetManager, ContentStyleSheetManager>();
     }
 }
