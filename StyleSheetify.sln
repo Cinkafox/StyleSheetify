@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Robust.Generators", "..\Rob
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlX", "..\RobustToolbox\XamlX\src\XamlX\XamlX.csproj", "{C05364DC-8BDD-4E01-A9F2-BEE43CD7D6CF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Content.StyleSheetify.Server", "Content.StyleSheetify.Server\Content.StyleSheetify.Server.csproj", "{6CECD925-2E08-4A31-B924-2FC949FF3B3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{C05364DC-8BDD-4E01-A9F2-BEE43CD7D6CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C05364DC-8BDD-4E01-A9F2-BEE43CD7D6CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C05364DC-8BDD-4E01-A9F2-BEE43CD7D6CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CECD925-2E08-4A31-B924-2FC949FF3B3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CECD925-2E08-4A31-B924-2FC949FF3B3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CECD925-2E08-4A31-B924-2FC949FF3B3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CECD925-2E08-4A31-B924-2FC949FF3B3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1A29EB0C-4342-472D-88D9-3652C1196DAB} = {ECFC1A3D-36ED-4C59-A26B-A02EBD3BC24B}

@@ -15,7 +15,8 @@ namespace Content.StyleSheetify.Client.StyleSheet.StyleBox;
 [Serializable, DataDefinition]
 public sealed partial class StyleBoxTextureData : StyleBoxData
 {
-    [DataField(customTypeSerializer:typeof(TextureSerializer))] public Texture Texture;
+    [DataField(customTypeSerializer: typeof(TextureSerializer))]
+    public Texture Texture = default!;
 
     /// <summary>
     /// Left expansion size, in virtual pixels.
