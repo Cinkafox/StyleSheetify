@@ -4,26 +4,21 @@ using Robust.Shared.Animations;
 
 namespace Content.StyleSheetify.Client.Utils;
 
-public sealed class AnimationExtend<T>  : Control
+public sealed class AnimationExtend<T> : Control
 {
-    public TimeSpan Length;
-
-    private readonly Action<T> _action;
-
-    private readonly Guid _guid = Guid.NewGuid();
-
+    public TimeSpan Length { get; private set; }
+    public Animation? Animation { get; private set; }
     public Action? AnimationIsCompleted;
 
-    public Animation? Animation { get; private set; }
-
     private T _realValue = default!;
-
     private AnimationTrackControlProperty? _track;
+    private readonly Action<T> _action;
+    private readonly Guid _guid = Guid.NewGuid();
 
     public AnimationTrackControlProperty? Track
     {
         get => _track;
-        set
+        private init
         {
             if(value is null) return;
             _track = value;
@@ -32,7 +27,7 @@ public sealed class AnimationExtend<T>  : Control
             Length = _track.KeyFrames.Aggregate(TimeSpan.Zero,
                 (span, frame) => span.Add(TimeSpan.FromSeconds(frame.KeyTime)));
 
-            Animation = new Animation()
+            Animation = new()
             {
                 Length = Length, AnimationTracks = { _track }
             };
@@ -50,11 +45,24 @@ public sealed class AnimationExtend<T>  : Control
         }
     }
 
-    public AnimationExtend(Action<T> action, Control parent, AnimationTrackControlProperty track)
+    public AnimationExtend(
+        Action<T> action,
+        Control parent,
+        AnimationInterpolationMode interpolationMode,
+        List<AnimationTrackProperty.KeyFrame> keyFrames
+        )
     {
         _action = action;
         parent.AddChild(this);
-        Track = track;
+        Track = new()
+        {
+            InterpolationMode = interpolationMode,
+        };
+
+        foreach (var frame in keyFrames)
+        {
+            Track.KeyFrames.Add(frame);
+        }
 
         AnimationCompleted += OnAnimationCompleted;
     }
