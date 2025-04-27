@@ -1,6 +1,8 @@
 ﻿using Robust.Client.Animations;
 using Robust.Client.UserInterface;
 using Robust.Shared.Animations;
+using Robust.Shared.Log;
+
 
 namespace Content.StyleSheetify.Client.Utils;
 
@@ -54,15 +56,17 @@ public sealed class AnimationExtend<T> : Control
     {
         _action = action;
         parent.AddChild(this);
-        Track = new()
+        var track = new AnimationTrackControlProperty()
         {
             InterpolationMode = interpolationMode,
         };
 
         foreach (var frame in keyFrames)
         {
-            Track.KeyFrames.Add(frame);
+            track.KeyFrames.Add(frame);
         }
+
+        Track = track;
 
         AnimationCompleted += OnAnimationCompleted;
     }
@@ -74,7 +78,7 @@ public sealed class AnimationExtend<T> : Control
 
     public void PlayAnimation()
     {
-        if(Animation is null) return;
+        if(Animation is null) throw new Exception("Animation is null");
         PlayAnimation(Animation,_guid.ToString());
     }
 
