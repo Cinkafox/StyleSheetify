@@ -1,5 +1,6 @@
 ﻿using Content.StyleSheetify.Shared.Dynamic;
 using Robust.Client.Graphics;
+using Robust.Client.ResourceManagement;
 using Robust.Shared.IoC;
 using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.Manager;
@@ -29,7 +30,7 @@ public sealed class StyleBoxSerializer : ITypeSerializer<StyleBoxFlat, MappingDa
 
     public StyleBoxTexture Read(ISerializationManager serializationManager, MappingDataNode node,
         IDependencyCollection dependencies, SerializationHookContext hookCtx, ISerializationContext? context = null, ISerializationManager.InstantiationDelegate<StyleBoxTexture>? instanceProvider = null) =>
-        serializationManager.Read<StyleBoxTextureData?>(node)!.GetStyleboxTexture();
+        serializationManager.Read<StyleBoxTextureData?>(node)!.GetStyleboxTexture(dependencies);
 
     public DataNode Write(ISerializationManager serializationManager, StyleBoxTexture value, IDependencyCollection dependencies,
         bool alwaysWrite = false, ISerializationContext? context = null) =>

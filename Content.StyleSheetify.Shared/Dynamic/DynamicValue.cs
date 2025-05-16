@@ -1,26 +1,25 @@
-﻿using Robust.Shared.Analyzers;
-using Robust.Shared.Serialization.Manager.Attributes;
+﻿using Robust.Shared.Serialization.Manager.Attributes;
 using Robust.Shared.ViewVariables;
 
 namespace Content.StyleSheetify.Shared.Dynamic;
 
-[DataDefinition, Serializable, Virtual]
-public partial class DynamicValue
+[DataDefinition, Serializable,]
+public sealed partial class DynamicValue
 {
     public static string ReadByPrototypeCommand = "readByPrototype";
-    
+
     [ViewVariables] private string _valueType = ReadByPrototypeCommand;
     private object _value = default!;
 
-    public virtual object GetValueObject()
+    public object GetValueObject()
     {
         if (_value is LazyDynamicValue lazyDynamicValue)
             _value = lazyDynamicValue.Object;
-               
+
         return _value;
     }
 
-    public virtual string GetValueType()
+    public string GetValueType()
     {
         return _valueType;
     }

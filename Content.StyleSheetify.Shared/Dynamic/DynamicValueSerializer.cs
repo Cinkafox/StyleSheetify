@@ -101,7 +101,7 @@ public sealed class DynamicValueSerializer : ITypeSerializer<DynamicValue, Mappi
         }
         catch (Exception e)
         {
-
+            // ignored
         }
 
         return new DynamicValue(nameof(ProtoId<DynamicValuePrototype>),
@@ -128,15 +128,24 @@ public sealed class DynamicValueSerializer : ITypeSerializer<DynamicValue, Mappi
     {
         var compound = new DynamicValueCompound(root, serializationManager);
 
-        if (TryGetParent(root, dependencies, out var parentMapping))
+        if (TryGetParent(root, dependencies, out var parentMapping) && compound.Value != null)
         {
-            var parentCompound = GetCompound(parentMapping, dependencies,
+            var parentCompound = GetCompound(
+                parentMapping,
+                dependencies,
                 serializationManager);
+
+            if(parentCompound.Value is null)
+                return compound;
 
             compound.Type = parentCompound.Type;
             var type = GetType(serializationManager,parentCompound.Type);
 
-            compound.Value = serializationManager.PushComposition(type, [parentCompound.Value],
+            compound.Value = serializationManager.PushComposition(
+                    type,
+                [
+                        parentCompound.Value
+                    ],
                     compound.Value);
         }
 

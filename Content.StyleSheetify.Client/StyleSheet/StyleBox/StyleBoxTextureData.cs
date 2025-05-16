@@ -1,22 +1,25 @@
 ﻿using System.Numerics;
-using Content.StyleSheetify.Client.Serializer;
 using Robust.Client.ResourceManagement;
 using Robust.Client.Utility;
+using Robust.Shared.ContentPack;
 using Robust.Shared.IoC;
+using Robust.Shared.Log;
 using Robust.Shared.Maths;
 using Robust.Shared.Serialization.Manager.Attributes;
 using Robust.Shared.Utility;
 using IRsiStateLike = Robust.Client.Graphics.IRsiStateLike;
 using StyleBoxTexture = Robust.Client.Graphics.StyleBoxTexture;
-using Texture = Robust.Client.Graphics.Texture;
 
 namespace Content.StyleSheetify.Client.StyleSheet.StyleBox;
 
 [Serializable, DataDefinition]
 public sealed partial class StyleBoxTextureData : StyleBoxData
 {
-    [DataField(customTypeSerializer: typeof(TextureSerializer))]
-    public Texture Texture = default!;
+    // TODO: Make another logic for detect test build
+    public static bool IgnoreTextures;
+
+    [DataField]
+    public ResPath Texture;
 
     /// <summary>
     /// Left expansion size, in virtual pixels.
@@ -95,11 +98,17 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
     /// </summary>
     [DataField] public Vector2 TextureScale  = Vector2.One;
 
-    public StyleBoxTexture GetStyleboxTexture()
+    public StyleBoxTexture GetStyleboxTexture(IDependencyCollection dependencyCollection)
     {
         var styleBox = new StyleBoxTexture();
         SetBaseParam(ref styleBox);
-        styleBox.Texture = Texture;
+
+        var resCache = dependencyCollection.Resolve<IResourceCache>();
+
+        if (!IgnoreTextures &&
+           resCache.TryGetResource<TextureResource>(Texture, out var texture))
+            styleBox.Texture = texture;
+
         styleBox.Mode = StretchMode;
         styleBox.Modulate = Modulate;
         styleBox.TextureScale = TextureScale;
