@@ -106,5 +106,17 @@ public abstract class StyleBoxData
             styleBox.PaddingRight = PaddingRight;
             styleBox.PaddingTop = PaddingTop;
         }
+
+        public void GetBaseParam<T>(T styleBox) where T : Robust.Client.Graphics.StyleBox
+        {
+            ContentMarginLeftOverride = styleBox.ContentMarginLeftOverride;
+            ContentMarginTopOverride = styleBox.ContentMarginTopOverride;
+            ContentMarginRightOverride = styleBox.ContentMarginRightOverride;
+            ContentMarginBottomOverride = styleBox.ContentMarginBottomOverride;
+            PaddingLeft = styleBox.PaddingLeft;
+            PaddingTop = styleBox.PaddingTop;
+            PaddingRight = styleBox.PaddingRight;
+            PaddingBottom = styleBox.PaddingBottom;
+        }
 }
 

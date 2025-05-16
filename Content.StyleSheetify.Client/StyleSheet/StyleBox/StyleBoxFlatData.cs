@@ -24,4 +24,14 @@ public sealed partial class StyleBoxFlatData : StyleBoxData
         styleBox.BorderThickness = data.BorderThickness;
         return styleBox;
     }
+
+    public static StyleBoxFlatData From(StyleBoxFlat value)
+    {
+        var styleBox = new StyleBoxFlatData();
+        styleBox.GetBaseParam(value);
+        styleBox.BackgroundColor = value.BackgroundColor;
+        styleBox.BorderColor = value.BorderColor;
+        styleBox.BorderThickness = value.BorderThickness;
+        return styleBox;
+    }
 }

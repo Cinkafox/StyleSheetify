@@ -26,7 +26,7 @@ public sealed class StyleBoxSerializer : ITypeSerializer<StyleBoxFlat, MappingDa
 
     public DataNode Write(ISerializationManager serializationManager, StyleBoxFlat value, IDependencyCollection dependencies,
         bool alwaysWrite = false, ISerializationContext? context = null) =>
-        throw new NotImplementedException();
+        serializationManager.WriteValue(StyleBoxFlatData.From(value));
 
     public StyleBoxTexture Read(ISerializationManager serializationManager, MappingDataNode node,
         IDependencyCollection dependencies, SerializationHookContext hookCtx, ISerializationContext? context = null, ISerializationManager.InstantiationDelegate<StyleBoxTexture>? instanceProvider = null) =>
@@ -34,7 +34,7 @@ public sealed class StyleBoxSerializer : ITypeSerializer<StyleBoxFlat, MappingDa
 
     public DataNode Write(ISerializationManager serializationManager, StyleBoxTexture value, IDependencyCollection dependencies,
         bool alwaysWrite = false, ISerializationContext? context = null) =>
-        throw new NotImplementedException();
+        serializationManager.WriteValue(StyleBoxTextureData.From(value));
 
     public ValidationNode Validate(ISerializationManager serializationManager,
         SequenceDataNode node,
@@ -62,10 +62,20 @@ public sealed class StyleBoxSerializer : ITypeSerializer<StyleBoxFlat, MappingDa
         return styleBoxLayers;
     }
 
-    public DataNode Write(ISerializationManager serializationManager,
+    public DataNode Write(
+        ISerializationManager serializationManager,
         StyleBoxLayers value,
         IDependencyCollection dependencies,
         bool alwaysWrite = false,
-        ISerializationContext? context = null) =>
-        throw new NotImplementedException();
+        ISerializationContext? context = null
+    )
+    {
+        var seq = new SequenceDataNode();
+        foreach (var layer in value.Layers)
+        {
+            seq.Add(serializationManager.WriteValue(layer));
+        }
+
+        return seq;
+    }
 }

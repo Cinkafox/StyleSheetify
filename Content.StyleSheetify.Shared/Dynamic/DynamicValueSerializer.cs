@@ -58,7 +58,10 @@ public sealed class DynamicValueSerializer : ITypeSerializer<DynamicValue, Mappi
     public DataNode Write(ISerializationManager serializationManager, DynamicValue value, IDependencyCollection dependencies,
         bool alwaysWrite = false, ISerializationContext? context = null)
     {
-        throw new NotImplementedException();
+        return new MappingDataNode()
+        {
+            { "valueType", value.GetValueType() }, { "value", serializationManager.WriteValue(value.GetValueObject()) }
+        };
     }
 
     public ValidationNode Validate(ISerializationManager serializationManager, ValueDataNode node,

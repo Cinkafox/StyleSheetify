@@ -8,6 +8,7 @@ using Robust.Shared.Maths;
 using Robust.Shared.Serialization.Manager.Attributes;
 using Robust.Shared.Utility;
 using IRsiStateLike = Robust.Client.Graphics.IRsiStateLike;
+using StyleBoxFlat = Robust.Client.Graphics.StyleBoxFlat;
 using StyleBoxTexture = Robust.Client.Graphics.StyleBoxTexture;
 
 namespace Content.StyleSheetify.Client.StyleSheet.StyleBox;
@@ -167,6 +168,27 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
             styleBox.PatchMarginRight = PatchMarginRight.Value;
         if (PatchMarginLeft != null)
             styleBox.PatchMarginLeft = PatchMarginLeft.Value;
+
+        return styleBox;
+    }
+
+    public static StyleBoxTextureData From(StyleBoxTexture value)
+    {
+        var styleBox = new StyleBoxTextureData();
+
+        styleBox.GetBaseParam(value);
+        styleBox.Texture = new ResPath("?");
+        styleBox.TextureScale = value.TextureScale;
+        styleBox.Modulate = value.Modulate;
+        styleBox.ExpandMarginBottom = value.ExpandMarginBottom;
+        styleBox.ExpandMarginTop = value.ExpandMarginTop;
+        styleBox.ExpandMarginRight = value.ExpandMarginRight;
+        styleBox.ExpandMarginLeft = value.ExpandMarginLeft;
+
+        styleBox.PatchMarginBottom = value.PatchMarginBottom;
+        styleBox.PatchMarginTop = value.PatchMarginTop;
+        styleBox.PatchMarginRight = value.PatchMarginRight;
+        styleBox.PatchMarginLeft = value.PatchMarginLeft;
 
         return styleBox;
     }
