@@ -1,6 +1,5 @@
 ﻿using Content.StyleSheetify.Shared.Dynamic;
 using Robust.Client.Graphics;
-using Robust.Client.ResourceManagement;
 using Robust.Shared.IoC;
 using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.Manager;
@@ -14,7 +13,7 @@ using Robust.Shared.Serialization.TypeSerializers.Interfaces;
 namespace Content.StyleSheetify.Client.StyleSheet.StyleBox;
 
 [TypeSerializer]
-public sealed class StyleBoxSerializer : ITypeSerializer<StyleBoxFlat, MappingDataNode>, ITypeSerializer<StyleBoxTexture, MappingDataNode>, ITypeSerializer<StyleBoxLayers, SequenceDataNode>
+public sealed class StyleBoxFlatSerializer : ITypeSerializer<StyleBoxFlat, MappingDataNode>, ITypeCopyCreator<StyleBoxFlat>
 {
     public ValidationNode Validate(ISerializationManager serializationManager, MappingDataNode node,
         IDependencyCollection dependencies, ISerializationContext? context = null) =>
@@ -22,20 +21,52 @@ public sealed class StyleBoxSerializer : ITypeSerializer<StyleBoxFlat, MappingDa
 
     public StyleBoxFlat Read(ISerializationManager serializationManager, MappingDataNode node, IDependencyCollection dependencies,
         SerializationHookContext hookCtx, ISerializationContext? context = null, ISerializationManager.InstantiationDelegate<StyleBoxFlat>? instanceProvider = null) =>
-        serializationManager.Read<StyleBoxFlatData?>(node)!;
+        serializationManager.Read<StyleBoxFlatData>(node);
 
     public DataNode Write(ISerializationManager serializationManager, StyleBoxFlat value, IDependencyCollection dependencies,
         bool alwaysWrite = false, ISerializationContext? context = null) =>
-        serializationManager.WriteValue(StyleBoxFlatData.From(value));
+        serializationManager.WriteValue<StyleBoxFlatData>(StyleBoxFlatData.From(value));
+
+    public StyleBoxFlat CreateCopy(
+        ISerializationManager serializationManager,
+        StyleBoxFlat source,
+        IDependencyCollection dependencies,
+        SerializationHookContext hookCtx,
+        ISerializationContext? context = null
+    ) =>
+        serializationManager.CreateCopy(StyleBoxFlatData.From(source));
+}
+
+
+[TypeSerializer]
+public sealed class StyleBoxTextureSerializer : ITypeSerializer<StyleBoxTexture, MappingDataNode>, ITypeCopyCreator<StyleBoxTexture>
+{
+    public ValidationNode Validate(ISerializationManager serializationManager, MappingDataNode node,
+        IDependencyCollection dependencies, ISerializationContext? context = null) =>
+        new ValidatedValueNode(node);
 
     public StyleBoxTexture Read(ISerializationManager serializationManager, MappingDataNode node,
         IDependencyCollection dependencies, SerializationHookContext hookCtx, ISerializationContext? context = null, ISerializationManager.InstantiationDelegate<StyleBoxTexture>? instanceProvider = null) =>
-        serializationManager.Read<StyleBoxTextureData?>(node)!.GetStyleboxTexture(dependencies);
+        serializationManager.Read<StyleBoxTextureData>(node).GetStyleboxTexture(dependencies);
 
     public DataNode Write(ISerializationManager serializationManager, StyleBoxTexture value, IDependencyCollection dependencies,
         bool alwaysWrite = false, ISerializationContext? context = null) =>
-        serializationManager.WriteValue(StyleBoxTextureData.From(value));
+        serializationManager.WriteValue<StyleBoxTextureData>(StyleBoxTextureData.From(value));
 
+    public StyleBoxTexture CreateCopy(
+        ISerializationManager serializationManager,
+        StyleBoxTexture source,
+        IDependencyCollection dependencies,
+        SerializationHookContext hookCtx,
+        ISerializationContext? context = null
+    ) =>
+        serializationManager.CreateCopy(StyleBoxTextureData.From(source)).GetStyleboxTexture(dependencies);
+}
+
+
+[TypeSerializer]
+public sealed class StyleBoxLayersSerializer : ITypeSerializer<StyleBoxLayers, SequenceDataNode> , ITypeCopyCreator<StyleBoxLayers>
+{
     public ValidationNode Validate(ISerializationManager serializationManager,
         SequenceDataNode node,
         IDependencyCollection dependencies,
@@ -77,5 +108,26 @@ public sealed class StyleBoxSerializer : ITypeSerializer<StyleBoxFlat, MappingDa
         }
 
         return seq;
+    }
+
+    public StyleBoxLayers CreateCopy(
+        ISerializationManager serializationManager,
+        StyleBoxLayers source,
+        IDependencyCollection dependencies,
+        SerializationHookContext hookCtx,
+        ISerializationContext? context = null
+    )
+    {
+        var list = new List<Robust.Client.Graphics.StyleBox>();
+
+        foreach (var layer in source.Layers)
+        {
+            list.Add(serializationManager.CreateCopy(layer));
+        }
+
+        return new StyleBoxLayers()
+        {
+            Layers = list
+        };
     }
 }

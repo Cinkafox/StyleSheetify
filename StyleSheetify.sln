@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlX", "..\RobustToolbox\X
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Content.StyleSheetify.Server", "Content.StyleSheetify.Server\Content.StyleSheetify.Server.csproj", "{6CECD925-2E08-4A31-B924-2FC949FF3B3A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Robust.Serialization.Generator", "..\RobustToolbox\Robust.Serialization.Generator\Robust.Serialization.Generator.csproj", "{D03E7BD2-0D49-42FB-9A6F-962F30A99283}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +88,10 @@ Global
 		{6CECD925-2E08-4A31-B924-2FC949FF3B3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CECD925-2E08-4A31-B924-2FC949FF3B3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CECD925-2E08-4A31-B924-2FC949FF3B3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D03E7BD2-0D49-42FB-9A6F-962F30A99283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D03E7BD2-0D49-42FB-9A6F-962F30A99283}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D03E7BD2-0D49-42FB-9A6F-962F30A99283}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D03E7BD2-0D49-42FB-9A6F-962F30A99283}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1A29EB0C-4342-472D-88D9-3652C1196DAB} = {ECFC1A3D-36ED-4C59-A26B-A02EBD3BC24B}
@@ -98,5 +104,6 @@ Global
 		{16B88150-71B9-40F2-9994-6E0BABB87AE3} = {ECFC1A3D-36ED-4C59-A26B-A02EBD3BC24B}
 		{DA01FCD1-29E6-48FD-9CBB-B0C4B95DB722} = {ECFC1A3D-36ED-4C59-A26B-A02EBD3BC24B}
 		{C05364DC-8BDD-4E01-A9F2-BEE43CD7D6CF} = {ECFC1A3D-36ED-4C59-A26B-A02EBD3BC24B}
+		{D03E7BD2-0D49-42FB-9A6F-962F30A99283} = {ECFC1A3D-36ED-4C59-A26B-A02EBD3BC24B}
 	EndGlobalSection
 EndGlobal

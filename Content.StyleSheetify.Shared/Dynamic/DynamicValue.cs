@@ -3,12 +3,11 @@ using Robust.Shared.ViewVariables;
 
 namespace Content.StyleSheetify.Shared.Dynamic;
 
-[DataDefinition, Serializable,]
-public sealed partial class DynamicValue
+public sealed class DynamicValue
 {
     public static string ReadByPrototypeCommand = "readByPrototype";
 
-    [ViewVariables] private string _valueType = ReadByPrototypeCommand;
+    private string _valueType = ReadByPrototypeCommand;
     private object _value = default!;
 
     public object GetValueObject()

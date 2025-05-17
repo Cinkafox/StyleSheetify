@@ -58,10 +58,35 @@ public sealed class DynamicValueSerializer : ITypeSerializer<DynamicValue, Mappi
     public DataNode Write(ISerializationManager serializationManager, DynamicValue value, IDependencyCollection dependencies,
         bool alwaysWrite = false, ISerializationContext? context = null)
     {
-        return new MappingDataNode()
+        var typeStr = value.GetValueType();
+
+        if (typeStr.StartsWith("PROTO_"))
         {
-            { "valueType", value.GetValueType() }, { "value", serializationManager.WriteValue(value.GetValueObject()) }
-        };
+            return new ValueDataNode(typeStr.Replace("PROTO_", ""));
+        }
+
+        switch (typeStr)
+        {
+            case "Color":
+                return serializationManager.WriteValue((Color)value.GetValueObject());
+            case "Enum":
+                return serializationManager.WriteValue((Enum)value.GetValueObject());
+            case "Vector2":
+                return serializationManager.WriteValue((Vector2)value.GetValueObject());
+            case "Number":
+                return serializationManager.WriteValue((float)value.GetValueObject());
+            case "String":
+                return serializationManager.WriteValue((string) value.GetValueObject());
+            default:
+            {
+                var type = GetType(serializationManager, new ValueDataNode(typeStr));
+
+                return new MappingDataNode()
+                {
+                    { "valueType", typeStr }, { "value", serializationManager.WriteValue(type, value.GetValueObject()) }
+                };
+            }
+        }
     }
 
     public ValidationNode Validate(ISerializationManager serializationManager, ValueDataNode node,
@@ -107,7 +132,7 @@ public sealed class DynamicValueSerializer : ITypeSerializer<DynamicValue, Mappi
             // ignored
         }
 
-        return new DynamicValue(nameof(ProtoId<DynamicValuePrototype>),
+        return new DynamicValue($"PROTO_{node.Value}",
             new LazyDynamicValue(
                 () =>
                 {
@@ -120,7 +145,8 @@ public sealed class DynamicValueSerializer : ITypeSerializer<DynamicValue, Mappi
     private Type GetType(ISerializationManager serializationManager, ValueDataNode? valueType)
     {
         if (valueType is null)
-            throw new Exception();
+            throw new Exception("ValueType is null");
+
         var type = serializationManager.Read<Type?>(valueType);
         if (type is null)
             throw new InvalidMappingException("NO TYPE " + valueType.Value);

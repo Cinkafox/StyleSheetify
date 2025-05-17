@@ -1,15 +1,14 @@
 ﻿using System.Numerics;
 using Robust.Client.ResourceManagement;
 using Robust.Client.Utility;
-using Robust.Shared.ContentPack;
 using Robust.Shared.IoC;
-using Robust.Shared.Log;
 using Robust.Shared.Maths;
+using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.Manager.Attributes;
 using Robust.Shared.Utility;
-using IRsiStateLike = Robust.Client.Graphics.IRsiStateLike;
-using StyleBoxFlat = Robust.Client.Graphics.StyleBoxFlat;
 using StyleBoxTexture = Robust.Client.Graphics.StyleBoxTexture;
+using Texture = Robust.Client.Graphics.Texture;
+
 
 namespace Content.StyleSheetify.Client.StyleSheet.StyleBox;
 
@@ -18,6 +17,7 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
 {
     // TODO: Make another logic for detect test build
     public static bool IgnoreTextures;
+    public static Dictionary<int, ResPath> Paths = new();
 
     [DataField]
     public ResPath Texture;
@@ -107,8 +107,11 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
         var resCache = dependencyCollection.Resolve<IResourceCache>();
 
         if (!IgnoreTextures &&
-           resCache.TryGetResource<TextureResource>(Texture, out var texture))
+            resCache.TryGetResource<TextureResource>(Texture, out var texture))
+        {
+            Paths.TryAdd(texture.GetHashCode(), Texture);
             styleBox.Texture = texture;
+        }
 
         styleBox.Mode = StretchMode;
         styleBox.Modulate = Modulate;
@@ -177,7 +180,9 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
         var styleBox = new StyleBoxTextureData();
 
         styleBox.GetBaseParam(value);
-        styleBox.Texture = new ResPath("?");
+        if (Paths.TryGetValue(value.GetHashCode(), out var path))
+            styleBox.Texture = path;
+
         styleBox.TextureScale = value.TextureScale;
         styleBox.Modulate = value.Modulate;
         styleBox.ExpandMarginBottom = value.ExpandMarginBottom;
@@ -191,19 +196,5 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
         styleBox.PatchMarginLeft = value.PatchMarginLeft;
 
         return styleBox;
-    }
-
-    private IRsiStateLike RsiStateLike(SpriteSpecifier specifier, IDependencyCollection dependencies)
-    {
-        var resC = dependencies.Resolve<IResourceCache>();
-        switch (specifier)
-        {
-            case SpriteSpecifier.Texture tex:
-                return tex.GetTexture(resC);
-            case SpriteSpecifier.Rsi rsi:
-                return rsi.GetState(resC);
-            default:
-                throw new NotSupportedException();
-        }
     }
 }
