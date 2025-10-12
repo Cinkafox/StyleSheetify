@@ -23,7 +23,7 @@ public sealed class ThicknessSerializer : ITypeSerializer<Thickness, ValueDataNo
     {
         if (!VectorSerializerUtility.TryParseArgs(node.Value, 4, out var args))
         {
-            throw new InvalidMappingException($"Could not parse {nameof(Vector4)}: '{node.Value}'");
+            throw new InvalidMappingException($"Could not parse {nameof(Thickness)}: '{node.Value}'");
         }
 
         var x = float.Parse(args[0], CultureInfo.InvariantCulture);
@@ -40,7 +40,7 @@ public sealed class ThicknessSerializer : ITypeSerializer<Thickness, ValueDataNo
     {
         if (!VectorSerializerUtility.TryParseArgs(node.Value, 4, out var args))
         {
-            throw new InvalidMappingException($"Could not parse {nameof(Vector4)}: '{node.Value}'");
+            throw new InvalidMappingException($"Could not parse {nameof(Thickness)}: '{node.Value}'");
         }
 
         return float.TryParse(args[0], NumberStyles.Any, CultureInfo.InvariantCulture, out _) &&
