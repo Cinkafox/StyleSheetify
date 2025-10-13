@@ -109,8 +109,11 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
         if (!IgnoreTextures &&
             resCache.TryGetResource<TextureResource>(Texture, out var texture))
         {
-            Paths.TryAdd(texture.GetHashCode(), Texture);
-            styleBox.Texture = texture;
+            lock (Paths)
+            {
+                Paths.TryAdd(texture.GetHashCode(), Texture);
+                styleBox.Texture = texture;
+            }
         }
 
         styleBox.Mode = StretchMode;
@@ -180,8 +183,11 @@ public sealed partial class StyleBoxTextureData : StyleBoxData
         var styleBox = new StyleBoxTextureData();
 
         styleBox.GetBaseParam(value);
-        if (Paths.TryGetValue(value.GetHashCode(), out var path))
-            styleBox.Texture = path;
+        lock (Paths)
+        {
+            if (Paths.TryGetValue(value.GetHashCode(), out var path))
+                styleBox.Texture = path;
+        }
 
         styleBox.TextureScale = value.TextureScale;
         styleBox.Modulate = value.Modulate;
