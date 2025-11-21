@@ -1,11 +1,12 @@
 ﻿using Robust.Client.UserInterface;
 using Robust.Shared.IoC;
+using Robust.Shared.Log;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Reflection;
 
 namespace Content.StyleSheetify.Client.StyleSheet;
 
-public sealed class ContentStyleSheetManager : IContentStyleSheetManager
+internal sealed class ContentStyleSheetManager : IContentStyleSheetManager
 {
     [Dependency] private readonly IReflectionManager _reflectionManager = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
@@ -93,5 +94,60 @@ public sealed class ContentStyleSheetManager : IContentStyleSheetManager
         }
 
         return element;
+    }
+
+    public Stylesheet MergeStyles(Stylesheet stylesheet, string prefix)
+    {
+        if (!_prototypeManager.TryIndex<StyleSheetPrototype>(prefix, out var proto))
+        {
+            Logger.Warning($"Stylesheet merge failed! Style proto {prefix} not found!");
+            return stylesheet;
+        }
+
+        var rules = stylesheet.Rules
+            .GroupBy(r => r.Selector)
+            .ToDictionary(g => g.Key, g => g.First());
+
+        var newRules = GetStyleRules(proto)
+            .GroupBy(r => r.Selector)
+            .ToDictionary(g => g.Key, g => g.First());
+
+        var mergedPropsCount = 0;
+        var mergedStylesCount = 0;
+        var addedStylesCount = 0;
+
+        foreach (var (key, value) in newRules)
+        {
+            if (rules.TryGetValue(key, out var oriValue))
+            {
+                var oriProps = oriValue.Properties
+                    .GroupBy(p => p.Name)
+                    .ToDictionary(g => g.Key, g => g.First());
+
+                foreach (var prop in value.Properties)
+                {
+                    oriProps[prop.Name] = prop;
+                    mergedPropsCount++;
+                }
+
+                var mergedRule = new StyleRule(key, oriProps.Values.ToList());
+                rules[key] = mergedRule;
+                mergedStylesCount++;
+            }
+            else
+            {
+                rules[key] = value;
+                addedStylesCount++;
+            }
+        }
+
+        Logger.Info(
+            $"Successfully merged style {prefix}: " +
+            $"{mergedPropsCount} props merged, " +
+            $"{mergedStylesCount} styles merged, " +
+            $"{addedStylesCount} styles added."
+        );
+
+        return new Stylesheet(rules.Values.ToList());
     }
 }

@@ -30,7 +30,7 @@ styles:
       value: <data for serializing value>
 ```
 
-в `styles` можно прописать множества правил, селектор которых не совпадает друг с другом. 
+в `styles` можно прописать множества правил, селектор которых не совпадает друг с другом.
 в `TypeDefinition` прописывается то, что прописали выше в `typeDefinition:`
 в `Class` прописывается класс стиля
 `PseudoClass` необязателен, но используется для указания правил при нажатии кнопки стилей, либо hover.
@@ -64,33 +64,50 @@ styles:
 Пример вы можете найти в [репозитории WWDP](https://github.com/WWhiteDreamProject/wwdpublic/tree/738af69d63984c93ee45c3a8f636d0abe7c339cc/Resources/Prototypes/_White/Styles)
 
 # Подключение либы
-находясь в корневой папке проекта, добавляем сабмодуль 
-```bash
+находясь в корневой папке проекта, добавляем сабмодуль
+
+Windows
+```ps1
 git submodule add https://github.com/Cinkafox/StyleSheetify
-```
-Добавляем как зависимость на стороне клиента `Content.Client.csproj`
-```xml
-<ItemGroup>
-    <ProjectReference Include="..\RobustToolbox\Lidgren.Network\Lidgren.Network.csproj" />
-    ...
-    <ProjectReference Include="..\StyleSheetify\Content.StyleSheetify.Client\Content.StyleSheetify.Client.csproj" />
-    <ProjectReference Include="..\StyleSheetify\Content.StyleSheetify.Shared\Content.StyleSheetify.Shared.csproj" />
-  </ItemGroup>
+.\StyleSheetify\Tools\AddToSolution.ps1
+.\StyleSheetify\Tools\InstallDependency.ps1
 ```
 
-Добавляем как зависимость на серверной стороне тоже для регистрации `Content.Server.csproj`
-```xml
-<ItemGroup>
-    <ProjectReference Include="..\Content.Packaging\Content.Packaging.csproj" />
-    ...
-    <ProjectReference Include="..\StyleSheetify\Content.StyleSheetify.Client\Content.StyleSheetify.Server.csproj" />
-    <ProjectReference Include="..\StyleSheetify\Content.StyleSheetify.Shared\Content.StyleSheetify.Shared.csproj" />
-  </ItemGroup>
+Linux
+```ps1
+git submodule add https://github.com/Cinkafox/StyleSheetify
+.\StyleSheetify\Tools\AddToSolution.sh
+.\StyleSheetify\Tools\InstallDependency.sh
 ```
+
+Добавьте в Content.Packaging/ClientPackaging.cs строку
+```csharp
+ await RobustSharedPackaging.WriteContentAssemblies(
+            inputPass,
+            contentDir,
+            "Content.Client",
+            new[] { "Content.Client", "Content.Shared", "Content.Shared.Database", "Content.StyleSheetify.Client", "Content.StyleSheetify.Shared" },
+            // "Content.StyleSheetify.Client", "Content.StyleSheetify.Shared"
+            cancel: cancel);
+```
+
+Добавьте в Content.Packaging/ServerPackaging.cs строку
+```csharp
+  private static readonly List<string> ServerContentAssemblies = new()
+    {
+        "Content.Server.Database",
+        "Content.Server",
+        "Content.Shared",
+        "Content.Shared.Database",
+        "Content.StyleSheetify.Shared", // Add this
+        "Content.StyleSheetify.Server" // And this
+    };
+```
+
 
 Измените код в `Content.Client/Stylesheets/StylesheetManager.cs` как [тут](https://github.com/WWhiteDreamProject/wwdpublic/blob/738af69d63984c93ee45c3a8f636d0abe7c339cc/Content.Client/Stylesheets/StylesheetManager.cs)
 
-Теперь пропишите где то в прототипах тестовый стиль и соберите проект 
+Теперь пропишите где то в прототипах тестовый стиль и соберите проект
 ```bash
 dotnet build
 ```

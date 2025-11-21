@@ -11,4 +11,5 @@ public interface IContentStyleSheetManager
     public IEnumerable<StyleRule> GetStyleRules(ProtoId<StyleSheetPrototype> protoId);
     public List<StyleRule> GetStyleRules(StyleSheetPrototype stylePrototype);
     public MutableSelector GetElement(string type, StyleSheetPrototype? prototype = null);
+    public Stylesheet MergeStyles(Stylesheet stylesheet, string prefix);
 }

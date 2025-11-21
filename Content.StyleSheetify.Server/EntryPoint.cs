@@ -9,6 +9,6 @@ public class EntryPoint : GameShared
     public override void PreInit()
     {
         var prototypes = IoCManager.Resolve<IPrototypeManager>();
-        Shared.StylePrototypeIgnorance.Register(prototypes);
+        StylePrototypeIgnorance.Register(prototypes);
     }
 }
