@@ -8,5 +8,6 @@ internal static class DependencyRegistration
     public static void Register(IDependencyCollection dc)
     {
         dc.Register<IContentStyleSheetManager, ContentStyleSheetManager>();
+        dc.Register<IContentStyleSheetManagerInternal, ContentStyleSheetManager>();
     }
 }
