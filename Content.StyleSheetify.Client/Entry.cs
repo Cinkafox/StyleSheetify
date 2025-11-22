@@ -6,10 +6,17 @@ namespace Content.StyleSheetify.Client;
 
 public class EntryPoint: GameShared
 {
+    [Dependency] private readonly IContentStyleSheetManagerInternal _contentStyleSheetManagerInternal = default!;
     public override void PreInit()
     {
         DependencyRegistration.Register(Dependencies);
         IoCManager.BuildGraph();
-        IoCManager.Resolve<IContentStyleSheetManagerInternal>().Initialize();
+        IoCManager.InjectDependencies(this);
+        _contentStyleSheetManagerInternal.Initialize();
+    }
+
+    public override void PostInit()
+    {
+        _contentStyleSheetManagerInternal.PostInitialize();
     }
 }
