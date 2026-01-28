@@ -1,15 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>Content.StyleSheetify.Shared</RootNamespace>
     </PropertyGroup>
 
+    <Import Project="../../MSBuild/Content.props" />
+    
     <ItemGroup>
-      <ProjectReference Include="..\..\RobustToolbox\Robust.Shared.Maths\Robust.Shared.Maths.csproj" />
-      <ProjectReference Include="..\..\RobustToolbox\Robust.Shared\Robust.Shared.csproj" />
+        <PackageReference Include="YamlDotNet" />
     </ItemGroup>
 
+    <Import Project="..\..\RobustToolbox\Imports\Lidgren.props" />
+    <Import Project="..\..\RobustToolbox\Imports\Shared.props" />
+
+    <Import Project="..\..\RobustToolbox\MSBuild\Robust.Properties.targets" />
+    <Import Project="..\..\RobustToolbox\MSBuild\Robust.CompNetworkGenerator.targets" />
 </Project>

@@ -70,13 +70,13 @@ public sealed class DynamicValueSerializer : ITypeSerializer<DynamicValue, Mappi
             case "Color":
                 return serializationManager.WriteValue((Color)value.GetValueObject());
             case "Enum":
-                return serializationManager.WriteValue((Enum)value.GetValueObject());
+                return serializationManager.WriteValue((Enum)value.GetValueObject(), notNullableOverride: true);
             case "Vector2":
                 return serializationManager.WriteValue((Vector2)value.GetValueObject());
             case "Number":
                 return serializationManager.WriteValue((float)value.GetValueObject());
             case "String":
-                return serializationManager.WriteValue((string) value.GetValueObject());
+                return serializationManager.WriteValue((string) value.GetValueObject(), notNullableOverride: true);
             default:
             {
                 var type = GetType(serializationManager, new ValueDataNode(typeStr));
@@ -114,7 +114,7 @@ public sealed class DynamicValueSerializer : ITypeSerializer<DynamicValue, Mappi
 
         if (value.StartsWith("enum."))
         {
-            var enu = serializationManager.Read<Enum>(node);
+            var enu = serializationManager.Read<Enum>(node, notNullableOverride: true);
             return new DynamicValue("Enum", enu);
         }
 

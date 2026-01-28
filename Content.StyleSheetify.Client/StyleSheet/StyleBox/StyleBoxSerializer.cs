@@ -21,11 +21,11 @@ public sealed class StyleBoxFlatSerializer : ITypeSerializer<StyleBoxFlat, Mappi
 
     public StyleBoxFlat Read(ISerializationManager serializationManager, MappingDataNode node, IDependencyCollection dependencies,
         SerializationHookContext hookCtx, ISerializationContext? context = null, ISerializationManager.InstantiationDelegate<StyleBoxFlat>? instanceProvider = null) =>
-        serializationManager.Read<StyleBoxFlatData>(node);
+        serializationManager.Read<StyleBoxFlatData>(node, notNullableOverride: true);
 
     public DataNode Write(ISerializationManager serializationManager, StyleBoxFlat value, IDependencyCollection dependencies,
         bool alwaysWrite = false, ISerializationContext? context = null) =>
-        serializationManager.WriteValue<StyleBoxFlatData>(StyleBoxFlatData.From(value));
+        serializationManager.WriteValue<StyleBoxFlatData>(StyleBoxFlatData.From(value), notNullableOverride: true);
 
     public StyleBoxFlat CreateCopy(
         ISerializationManager serializationManager,
@@ -34,7 +34,7 @@ public sealed class StyleBoxFlatSerializer : ITypeSerializer<StyleBoxFlat, Mappi
         SerializationHookContext hookCtx,
         ISerializationContext? context = null
     ) =>
-        serializationManager.CreateCopy(StyleBoxFlatData.From(source));
+        serializationManager.CreateCopy(StyleBoxFlatData.From(source), notNullableOverride: true);
 }
 
 
@@ -47,11 +47,11 @@ public sealed class StyleBoxTextureSerializer : ITypeSerializer<StyleBoxTexture,
 
     public StyleBoxTexture Read(ISerializationManager serializationManager, MappingDataNode node,
         IDependencyCollection dependencies, SerializationHookContext hookCtx, ISerializationContext? context = null, ISerializationManager.InstantiationDelegate<StyleBoxTexture>? instanceProvider = null) =>
-        serializationManager.Read<StyleBoxTextureData>(node).GetStyleboxTexture(dependencies);
+        serializationManager.Read<StyleBoxTextureData>(node, notNullableOverride: true).GetStyleboxTexture(dependencies);
 
     public DataNode Write(ISerializationManager serializationManager, StyleBoxTexture value, IDependencyCollection dependencies,
         bool alwaysWrite = false, ISerializationContext? context = null) =>
-        serializationManager.WriteValue<StyleBoxTextureData>(StyleBoxTextureData.From(value));
+        serializationManager.WriteValue<StyleBoxTextureData>(StyleBoxTextureData.From(value), notNullableOverride: true);
 
     public StyleBoxTexture CreateCopy(
         ISerializationManager serializationManager,
@@ -60,7 +60,7 @@ public sealed class StyleBoxTextureSerializer : ITypeSerializer<StyleBoxTexture,
         SerializationHookContext hookCtx,
         ISerializationContext? context = null
     ) =>
-        serializationManager.CreateCopy(StyleBoxTextureData.From(source)).GetStyleboxTexture(dependencies);
+        serializationManager.CreateCopy(StyleBoxTextureData.From(source), notNullableOverride: true).GetStyleboxTexture(dependencies);
 }
 
 
@@ -83,7 +83,7 @@ public sealed class StyleBoxLayersSerializer : ITypeSerializer<StyleBoxLayers, S
         var styleBoxLayers = new StyleBoxLayers();
         foreach (var dataNode in nodes)
         {
-            var datum = serializationManager.Read<DynamicValue>(dataNode);
+            var datum = serializationManager.Read<DynamicValue>(dataNode, notNullableOverride: true);
             if (datum.GetValueObject() is Robust.Client.Graphics.StyleBox styleBox)
             {
                 styleBoxLayers.Layers.Add(styleBox);
@@ -104,7 +104,7 @@ public sealed class StyleBoxLayersSerializer : ITypeSerializer<StyleBoxLayers, S
         var seq = new SequenceDataNode();
         foreach (var layer in value.Layers)
         {
-            seq.Add(serializationManager.WriteValue(layer));
+            seq.Add(serializationManager.WriteValue(layer, notNullableOverride: true));
         }
 
         return seq;
@@ -122,7 +122,7 @@ public sealed class StyleBoxLayersSerializer : ITypeSerializer<StyleBoxLayers, S
 
         foreach (var layer in source.Layers)
         {
-            list.Add(serializationManager.CreateCopy(layer));
+            list.Add(serializationManager.CreateCopy(layer, notNullableOverride: true));
         }
 
         return new StyleBoxLayers()

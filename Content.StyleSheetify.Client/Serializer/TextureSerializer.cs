@@ -58,7 +58,7 @@ public sealed class TextureSerializer : ITypeSerializer<Texture, ValueDataNode>,
         if (!node.TryGet("baseTexture", out var baseTexDataNode) || !node.TryGet("region", out var regionDataNode))
             throw new Exception();
 
-        var texture = serializationManager.Read<Texture>(baseTexDataNode);
+        var texture = serializationManager.Read<Texture>(baseTexDataNode, notNullableOverride: true);
         var region = serializationManager.Read<UIBox2>(regionDataNode);
 
         return new AtlasTexture(texture, region);

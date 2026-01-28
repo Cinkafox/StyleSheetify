@@ -1,19 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>Content.StyleSheetify.Client</RootNamespace>
     </PropertyGroup>
+    
+    <Import Project="../../MSBuild/Content.props" />
+
+    <Import Project="..\..\RobustToolbox\Imports\Client.props" />
+    <Import Project="..\..\RobustToolbox\Imports\Shared.props" />
+
+    <Import Project="..\..\RobustToolbox\MSBuild\Robust.Properties.targets" />
 
     <ItemGroup>
-      <ProjectReference Include="..\..\RobustToolbox\Robust.Client\Robust.Client.csproj" />
-      <ProjectReference Include="..\..\RobustToolbox\Robust.Shared.Maths\Robust.Shared.Maths.csproj" />
-      <ProjectReference Include="..\..\RobustToolbox\Robust.Shared\Robust.Shared.csproj" />
       <ProjectReference Include="..\Content.StyleSheetify.Shared\Content.StyleSheetify.Shared.csproj" />
-
-      <ProjectReference Include="..\..\RobustToolbox\Robust.Serialization.Generator\Robust.Serialization.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
-
+    
 </Project>

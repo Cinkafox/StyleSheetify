@@ -4,8 +4,8 @@ using Content.StyleSheetify.Shared.Dynamic;
 
 namespace Content.StyleSheetify.Client.StyleSheet;
 
-[Prototype("styleSheet")]
-public sealed class StyleSheetPrototype : IPrototype
+[Prototype]
+public sealed partial class StyleSheetPrototype : IPrototype
 {
     [IdDataField]
     public string ID { get; private set; } = default!;

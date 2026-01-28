@@ -96,7 +96,7 @@ public sealed class FontSerializer : ITypeSerializer<Robust.Client.Graphics.Font
     {
         if (!node.TryGet("font", out var pathNode) || !node.TryGet("size", out var sizeNode))
             throw new Exception();
-        var path = serializationManager.Read<List<ResPath>>(pathNode);
+        var path = serializationManager.Read<List<ResPath>>(pathNode, notNullableOverride: true);
         var size = serializationManager.Read<int>(sizeNode);
 
         return new FontSpecifier(path, size);
@@ -106,7 +106,7 @@ public sealed class FontSerializer : ITypeSerializer<Robust.Client.Graphics.Font
         bool alwaysWrite = false, ISerializationContext? context = null)
     {
         if (value is FontSpecifier fontSpecifier)
-            return serializationManager.WriteValue(fontSpecifier);
+            return serializationManager.WriteValue(fontSpecifier, notNullableOverride: true);
         throw new Exception();
     }
 }
