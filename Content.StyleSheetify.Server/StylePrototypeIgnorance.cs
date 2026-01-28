@@ -1,8 +1,8 @@
 using Robust.Shared.Prototypes;
 
-namespace Content.StyleSheetify.Shared;
+namespace Content.StyleSheetify.Server;
 
-public static class StylePrototypeIgnorance
+internal static class StylePrototypeIgnorance
 {
     public static void Register(IPrototypeManager prototypes)
     {
