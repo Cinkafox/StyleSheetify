@@ -13,10 +13,10 @@ namespace Content.StyleSheetify.Client.StyleSheet;
 /// </summary>
 internal sealed partial class ContentStyleSheetManager : IContentStyleSheetManager, IContentStyleSheetManagerInternal
 {
-    [Dependency] private readonly IReflectionManager _reflectionManager = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly IUserInterfaceManager _userInterfaceManager = default!;
-    [Dependency] private readonly ILogManager _logManager = default!;
+    [Dependency] private IReflectionManager _reflectionManager = default!;
+    [Dependency] private IPrototypeManager _prototypeManager = default!;
+    [Dependency] private IUserInterfaceManager _userInterfaceManager = default!;
+    [Dependency] private ILogManager _logManager = default!;
 
     /// <summary>
     /// Логгер, используемый для вывода сообщений от модуля StyleSheetify.

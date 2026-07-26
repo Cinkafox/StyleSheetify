@@ -28,7 +28,7 @@ public sealed class TextureSerializer : ITypeSerializer<Texture, ValueDataNode>,
         IDependencyCollection dependencies,
         ISerializationContext? context = null)
     {
-        if (!node.TryGet("baseTexture", out var baseTexDataNode) || !node.TryGet("region", out var regionDataNode))
+        if (!node.TryGet("baseTexture", out _) || !node.TryGet("region", out _))
             return new ErrorNode(node, "no base texture or region");
         return new ValidatedValueNode(node);
     }

@@ -1,8 +1,6 @@
 ﻿using Robust.Client.Animations;
 using Robust.Client.UserInterface;
 using Robust.Shared.Animations;
-using Robust.Shared.Log;
-
 
 namespace Content.StyleSheetify.Client.Utils;
 
@@ -12,7 +10,6 @@ public sealed class AnimationExtend<T> : Control
     public Animation? Animation { get; private set; }
     public Action? AnimationIsCompleted;
 
-    private T _realValue = default!;
     private AnimationTrackControlProperty? _track;
     private readonly Action<T> _action;
     private readonly Guid _guid = Guid.NewGuid();
@@ -39,13 +36,13 @@ public sealed class AnimationExtend<T> : Control
     [Animatable]
     public T Value
     {
-        get => _realValue;
+        get;
         set
         {
             _action(value);
-            _realValue = value;
+            field = value;
         }
-    }
+    } = default!;
 
     public AnimationExtend(
         Action<T> action,

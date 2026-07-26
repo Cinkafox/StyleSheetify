@@ -3,7 +3,7 @@ using Robust.Shared.Serialization.Manager.Attributes;
 
 namespace Content.StyleSheetify.Shared.Dynamic;
 
-[Prototype("dynamicValue")]
+[Prototype]
 public sealed partial class DynamicValuePrototype: IPrototype
 {
     [IdDataField]

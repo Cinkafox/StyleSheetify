@@ -16,5 +16,9 @@
     <ItemGroup>
       <ProjectReference Include="..\Content.StyleSheetify.Shared\Content.StyleSheetify.Shared.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="JetBrains.Annotations" />
+    </ItemGroup>
     
 </Project>

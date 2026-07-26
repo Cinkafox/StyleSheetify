@@ -3,8 +3,8 @@ using Robust.Shared.Serialization.Manager.Attributes;
 
 namespace Content.StyleSheetify.Client.StyleSheet.StyleBox;
 
-[Serializable]
-public abstract class StyleBoxData
+[Serializable, DataDefinition]
+public abstract partial class StyleBoxData
 {
         /// <summary>
         /// Left content margin, in virtual pixels.

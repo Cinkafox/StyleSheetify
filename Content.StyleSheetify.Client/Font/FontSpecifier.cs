@@ -31,13 +31,13 @@ public partial class FontSpecifier : Robust.Client.Graphics.Font
         Size = size;
     }
 
-    protected Robust.Client.Graphics.Font? _font;
+    protected Robust.Client.Graphics.Font? Font;
 
     public Robust.Client.Graphics.Font GetFont()
     {
-        if (_font != null) return _font;
-        _font = GetFont(IoCManager.Resolve<IResourceCache>(), Path, Size);
-        return _font;
+        if (Font != null) return Font;
+        Font = GetFont(IoCManager.Resolve<IResourceCache>(), Path, Size);
+        return Font;
     }
 
     public override int GetAscent(float scale)
@@ -86,7 +86,7 @@ public sealed class FontSerializer : ITypeSerializer<Robust.Client.Graphics.Font
     public ValidationNode Validate(ISerializationManager serializationManager, MappingDataNode node,
         IDependencyCollection dependencies, ISerializationContext? context = null)
     {
-        if (!node.TryGet("font", out var pathNode) || !node.TryGet("size", out var sizeNode))
+        if (!node.TryGet("font", out var pathNode) || !node.TryGet("size", out _))
             return new ErrorNode(node, "no font or size found!");
         return new ValidatedValueNode(pathNode);
     }

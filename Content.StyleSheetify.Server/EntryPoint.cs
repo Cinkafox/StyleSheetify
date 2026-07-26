@@ -4,7 +4,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.StyleSheetify.Server;
 
-public class EntryPoint : GameShared
+public sealed class EntryPoint : GameShared
 {
     public override void PreInit()
     {

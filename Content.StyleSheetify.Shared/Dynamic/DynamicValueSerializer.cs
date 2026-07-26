@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Numerics;
 using Robust.Shared.IoC;
-using Robust.Shared.Log;
 using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Sandboxing;
@@ -24,9 +23,9 @@ public sealed class DynamicValueSerializer : ITypeSerializer<DynamicValue, Mappi
     public ValidationNode Validate(ISerializationManager serializationManager, MappingDataNode node,
         IDependencyCollection dependencies, ISerializationContext? context = null)
     {
-        if (!node.TryGet("valueType", out ValueDataNode? valueType))
+        if (!node.TryGet("valueType", out ValueDataNode? _))
             return new FieldNotFoundErrorNode(new ValueDataNode("valueType"), typeof(string));
-        if(!node.TryGet("value", out var value))
+        if(!node.TryGet("value", out _))
             return new FieldNotFoundErrorNode(new ValueDataNode("value"), typeof(string));
         return new ValidatedMappingNode([]);
     }
@@ -36,18 +35,18 @@ public sealed class DynamicValueSerializer : ITypeSerializer<DynamicValue, Mappi
     {
         var compound = GetCompound(node, dependencies, serializationManager);
         if (compound.Type is null)
-            throw new Exception($"type not found for: {node.ToString()}");
+            throw new Exception($"type not found for: {node}");
 
         var type = GetType(serializationManager, compound.Type);
 
         if(compound.DoLazy)
             return new DynamicValue(compound.Type.Value,
-                new LazyDynamicValue(() => readValue(serializationManager, dependencies,type, context, compound.Value)));
+                new LazyDynamicValue(() => ReadValue(serializationManager, dependencies,type, context, compound.Value)));
 
-        return new DynamicValue(compound.Type.Value, readValue(serializationManager, dependencies,type, context, compound.Value));
+        return new DynamicValue(compound.Type.Value, ReadValue(serializationManager, dependencies,type, context, compound.Value));
     }
 
-    private object readValue(ISerializationManager serializationManager, IDependencyCollection dependencies,Type type, ISerializationContext? context, DataNode? value)
+    private object ReadValue(ISerializationManager serializationManager, IDependencyCollection dependencies,Type type, ISerializationContext? context, DataNode? value)
     {
         if (value is not null)
             return serializationManager.Read(type, value, context)!;
@@ -127,7 +126,7 @@ public sealed class DynamicValueSerializer : ITypeSerializer<DynamicValue, Mappi
                 return new DynamicValue("Vector2", new Vector2(x, y));
             }
         }
-        catch (Exception e)
+        catch (Exception)
         {
             // ignored
         }

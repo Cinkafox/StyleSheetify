@@ -131,3 +131,28 @@ public sealed class StyleBoxLayersSerializer : ITypeSerializer<StyleBoxLayers, S
         };
     }
 }
+
+[TypeSerializer]
+public sealed class StyleBoxRoundSerializer : ITypeSerializer<StyleBoxRound, MappingDataNode>, ITypeCopyCreator<StyleBoxRound>
+{
+    public ValidationNode Validate(ISerializationManager serializationManager, MappingDataNode node,
+        IDependencyCollection dependencies, ISerializationContext? context = null) =>
+        new ValidatedValueNode(node);
+
+    public StyleBoxRound Read(ISerializationManager serializationManager, MappingDataNode node, IDependencyCollection dependencies,
+        SerializationHookContext hookCtx, ISerializationContext? context = null, ISerializationManager.InstantiationDelegate<StyleBoxRound>? instanceProvider = null) =>
+        serializationManager.Read<StyleBoxRoundData>(node, notNullableOverride: true);
+
+    public DataNode Write(ISerializationManager serializationManager, StyleBoxRound value, IDependencyCollection dependencies,
+        bool alwaysWrite = false, ISerializationContext? context = null) =>
+        serializationManager.WriteValue<StyleBoxRoundData>(StyleBoxRoundData.From(value), notNullableOverride: true);
+
+    public StyleBoxRound CreateCopy(
+        ISerializationManager serializationManager,
+        StyleBoxRound source,
+        IDependencyCollection dependencies,
+        SerializationHookContext hookCtx,
+        ISerializationContext? context = null
+    ) =>
+        serializationManager.CreateCopy(StyleBoxRoundData.From(source), notNullableOverride: true);
+}

@@ -4,9 +4,9 @@ using Robust.Shared.IoC;
 
 namespace Content.StyleSheetify.Client;
 
-public class EntryPoint: GameShared
+public sealed partial class EntryPoint: GameShared
 {
-    [Dependency] private readonly IContentStyleSheetManagerInternal _contentStyleSheetManagerInternal = default!;
+    [Dependency] private IContentStyleSheetManagerInternal _contentStyleSheetManagerInternal = default!;
     public override void PreInit()
     {
         DependencyRegistration.Register(Dependencies);
